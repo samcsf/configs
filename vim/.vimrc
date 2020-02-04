@@ -60,37 +60,57 @@ let g:airline_theme='luna'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_splits = 1
 
+" ------------ CtrlP --------------
+"  ignore dirs
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+" ------------ Prettier --------------
+let g:prettier#config#bracket_spacing = 'true'
+
+" ------------ Vim-go --------------
+let g:go_fmt_command = "goimports"
+
+let mapleader = "\<Space>"
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <leader>i  <Plug>(go-info)
+
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+" ------------ Signify --------------
+let signify_sign_weight = 'NONE'
+
 " ------------ Vundle --------------
 set nocompatible              " be iMproved, required
 set showcmd
 filetype off                  " required
 
-" ------------ CtrlP --------------
-"  ignore dirs
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
-" ------------ Signify --------------
-let signify_sign_weight = 'NONE'
 
 " Plugins
 Plugin 'VundleVim/Vundle.vim' " <- Required
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-" Plugin 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'pangloss/vim-javascript'
 Plugin 'isRuslan/vim-es6'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'posva/vim-vue'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'fatih/vim-go'
-Plugin 'mattn/emmet-vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-surround'
 Plugin 'mhinz/vim-signify'
